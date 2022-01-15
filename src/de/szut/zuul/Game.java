@@ -53,19 +53,43 @@ public class Game
 
 
         // initialise room exits
-        marketsquare.setExits(tavern, templePyramid, null, sacrificialSite, null, null);
-        templePyramid.setExits(hut, null, null, marketsquare, wizard, keller);
-        wizard.setExits(null,null,null,null,null,templePyramid);
-        keller.setExits(null, null, null, secretPassage, templePyramid, null);
-        tavern.setExits(null, hut, marketsquare, null, null,null);
-        sacrificialSite.setExits(null, marketsquare, null , null, null, cave);
-        hut.setExits(null, jungle, templePyramid, tavern,null,null);
-        jungle.setExits(null, null, null, hut,null,null);
-        secretPassage.setExits(null, keller, null, cave,null,null);
-        cave.setExits(null, secretPassage, beach, null, sacrificialSite, null);
-        beach.setExits(cave, null, null, null,null,null);
+        marketsquare.setExit("north", tavern);
+        marketsquare.setExit("east", templePyramid);
+        marketsquare.setExit("west", sacrificialSite);
 
-        currentRoom = marketsquare;  // start game on marketsquare
+        templePyramid.setExit("north", hut);
+        templePyramid.setExit("west", marketsquare);
+        templePyramid.setExit("up", wizard);
+        templePyramid.setExit("down", keller);
+
+        wizard.setExit("down", templePyramid);
+
+        keller.setExit("west", secretPassage);
+        keller.setExit("up", templePyramid);
+
+        tavern.setExit("east", hut);
+        tavern.setExit("south", marketsquare);
+
+        sacrificialSite.setExit("east", marketsquare);
+        sacrificialSite.setExit("down", cave);
+
+        hut.setExit("east", jungle);
+        hut.setExit("south", templePyramid);
+        hut.setExit("west", tavern);
+
+        jungle.setExit("west", hut);
+
+        secretPassage.setExit("east", keller);
+        secretPassage.setExit("west", cave);
+
+
+        cave.setExit("east", secretPassage);
+        cave.setExit("sout", beach);
+        cave.setExit("west", sacrificialSite);
+
+        beach.setExit("north", cave);
+
+        currentRoom = marketsquare;  // start game on market square
     }
 
     /**

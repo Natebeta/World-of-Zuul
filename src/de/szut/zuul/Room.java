@@ -1,5 +1,7 @@
 package de.szut.zuul;
 
+import java.util.HashMap;
+
 /**
  * Class Room - a room in an adventure game.
  *
@@ -17,12 +19,17 @@ package de.szut.zuul;
 public class Room 
 {
     private String description;
+
+    private HashMap<String, Room> roomHashMap;
+
+    /*
     private Room northExit;
     private Room southExit;
     private Room eastExit;
     private Room westExit;
     private Room upExit;
     private Room downExit;
+     */
 
     /**
      * Create a room described "description". Initially, it has
@@ -30,39 +37,20 @@ public class Room
      * "an open court yard".
      * @param description The room's description.
      */
-    public Room(String description) 
+    public Room(String description)
     {
         this.description = description;
+        roomHashMap = new HashMap<String, Room>();
     }
 
     /**
      * Define the exits of this room.  Every direction either leads
      * to another room or is null (no exit there).
-     * @param north The north exit.
-     * @param east The east east.
-     * @param south The south exit.
-     * @param west The west exit.
+     * @param direction direction of exit.
+     * @param neighbour room next to current room.
      */
-    public void setExits(Room north, Room east, Room south, Room west, Room up, Room down)
-    {
-        if(north != null) {
-            northExit = north;
-        }
-        if(east != null) {
-            eastExit = east;
-        }
-        if(south != null) {
-            southExit = south;
-        }
-        if(west != null) {
-            westExit = west;
-        }
-        if(up != null) {
-            upExit = up;
-        }
-        if(down != null) {
-            downExit = down;
-        }
+    public void setExit(String direction, Room neighbour) {
+        roomHashMap.put(direction, neighbour);
     }
 
     /**
@@ -75,6 +63,9 @@ public class Room
 
     public Room getExit(String direction) {
 
+        return roomHashMap.get(direction);
+
+        /* Braucht man nicht mehr?
         switch (direction) {
             case "north":
                 return northExit;
@@ -91,6 +82,7 @@ public class Room
             default:
                 return null;
         }
+         */
     }
 
     public String exitsToString() {
