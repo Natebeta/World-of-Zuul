@@ -21,6 +21,7 @@ public class Room
     private String description;
 
     private HashMap<String, Room> roomHashMap;
+    private HashMap <String, Item> items;
 
     /*
     private Room northExit;
@@ -41,6 +42,7 @@ public class Room
     {
         this.description = description;
         roomHashMap = new HashMap<String, Room>();
+        items = new HashMap<String, Item>();
     }
 
     /**
@@ -110,7 +112,18 @@ public class Room
 
     public String getLongDescription()
     {
-        return "You are " + description + ".\n" + "Exits: " + exitsToString();
+        StringBuilder itemsToString = new StringBuilder("");
+        for (Item value : items.values()) {
+            itemsToString.append("- " + value.getName() + ", " + value.getDescription() + ", " + value.getWeight() + "kg"
+                    + "\n");
+        }
+
+        return "You are " + description + ".\n" + "Exits: " + exitsToString() + "\n"
+                + "Items in this room: \n" + itemsToString;
+    }
+
+    public void putItem(String itemName, String description, double weight) {
+        items.put(itemName, new Item(itemName,description, weight));
     }
 
 }

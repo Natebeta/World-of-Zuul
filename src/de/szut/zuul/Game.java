@@ -40,16 +40,25 @@ public class Game
       
         // create the rooms
         marketsquare = new Room("on the market square");
+        marketsquare.putItem("Bogen", "ein Bogen aus Holz", 0.5);
         templePyramid = new Room("in a temple pyramid");
         tavern = new Room("in the tavern at the market square");
+        tavern.putItem("Nahrung", "ein Teller mit deftigem Fleisch und Maisbrei", 0.5);
         sacrificialSite = new Room("at a sacrificial site");
+        sacrificialSite.putItem("Messer", "ein sehr scharfes, großes Messer", 1);
         hut = new Room("in a hut");
+        hut.putItem("Speer", "ein Speer mit dazugehöriger Schleuder", 5.0);
         jungle = new Room("in the jungle");
+        jungle.putItem("Pflanze", "eine Heilpflanze", 0.5);
+        jungle.putItem("Kakao", "ein kleiner Kakaobaum", 5);
         secretPassage = new Room("in a secret passage");
         cave = new Room("in a cave");
+        cave.putItem("Schatz", "eine kleine Schatztruhe mit Münzen", 7.5);
         beach = new Room("on the beach");
         keller = new Room("in the keller");
+        keller.putItem("Schmuck", "ein sehr hübscher Kopfschmuck", 1);
         wizard = new Room("in wizard's room");
+        wizard.putItem("Pfeile", "ein Köcher mit diversen Pfeilen", 1);
 
 
         // initialise room exits
