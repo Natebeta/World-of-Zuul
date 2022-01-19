@@ -126,4 +126,14 @@ public class Room
         items.put(itemName, new Item(itemName,description, weight));
     }
 
+    public Item removeItem(String name) {
+        if (items.containsKey(name)) {
+            Item returnItem = items.get(name);
+            items.remove(name);
+            return returnItem;
+        } else {
+            return null;
+        }
+    }
+
 }

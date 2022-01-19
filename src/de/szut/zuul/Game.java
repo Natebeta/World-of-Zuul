@@ -20,15 +20,16 @@ package de.szut.zuul;
 public class Game 
 {
     private Parser parser;
-    private Room currentRoom;
+    private Player player = new Player();
         
     /**
      * Create the game and initialise its internal map.
      */
-    public Game() 
+    public Game()
     {
         createRooms();
         parser = new Parser();
+        player = new Player();
     }
 
     /**
@@ -98,7 +99,7 @@ public class Game
 
         beach.setExit("north", cave);
 
-        currentRoom = marketsquare;  // start game on market square
+        player.currentRoom = marketsquare;  // start game on market square
     }
 
     /**
@@ -158,6 +159,16 @@ public class Game
         else if (commandWord.equals("look")) {
             look();
         }
+        else if (commandWord.equals("take")) {
+            takeItem(command);
+            System.out.println(player.showStatus());
+            System.out.println(player.getCurrentRoom().getLongDescription());
+        }
+        else if (commandWord.equals("drop")) {
+            dropItem(command);
+            System.out.println(player.showStatus());
+            System.out.println(player.getCurrentRoom().getLongDescription());
+        }
 
         return wantToQuit;
     }
@@ -195,29 +206,29 @@ public class Game
         // Try to leave current room.
         Room nextRoom = null;
         if(direction.equals("north")) {
-            nextRoom = currentRoom.getExit("north");
+            nextRoom = player.getCurrentRoom().getExit("north");
         }
         if(direction.equals("east")) {
-            nextRoom = currentRoom.getExit("east");
+            nextRoom = player.getCurrentRoom().getExit("east");
         }
         if(direction.equals("south")) {
-            nextRoom = currentRoom.getExit("south");
+            nextRoom = player.getCurrentRoom().getExit("south");
         }
         if(direction.equals("west")) {
-            nextRoom = currentRoom.getExit("west");
+            nextRoom = player.getCurrentRoom().getExit("west");
         }
         if(direction.equals("up")) {
-            nextRoom = currentRoom.getExit("up");
+            nextRoom = player.getCurrentRoom().getExit("up");
         }
         if(direction.equals("down")) {
-            nextRoom = currentRoom.getExit("down");
+            nextRoom = player.getCurrentRoom().getExit("down");
         }
 
         if (nextRoom == null) {
             System.out.println("There is no door!");
         }
         else {
-            currentRoom = nextRoom;
+            player.currentRoom = nextRoom;
             printRoomInformation();
         }
     }
@@ -239,10 +250,34 @@ public class Game
     }
 
     private void printRoomInformation() {
-        System.out.println(currentRoom.getLongDescription());
+        if (player.getCurrentRoom() == null) {
+            createRooms();
+        }
+        System.out.println(player.getCurrentRoom().getLongDescription());
     }
 
     private void look() {
-        System.out.println(currentRoom.getLongDescription());
+        System.out.println(player.getCurrentRoom().getLongDescription());
+    }
+
+    private void takeItem(Command command) {
+        String itemFromCommand = command.getSecondWord();
+        Item newItem = player.getCurrentRoom().removeItem(itemFromCommand);
+        if ((newItem != null) && !(player.loadCapacity > 10)) {
+            player.takeItem(newItem);
+        } else {
+            System.out.println("takeItem Error: Gegenstand gibt es nicht / Spieler ist zu schwer");
+        }
+    }
+
+    private void dropItem(Command command) {
+        String itemFromCommand = command.getSecondWord();
+        Item newItem = player.dropItem(itemFromCommand);
+        if (newItem != null) {
+            player.currentRoom.putItem(newItem.getName(), newItem.getDescription(), newItem.getWeight());
+        } else {
+            System.out.println("Bei dropItem Error: Das Item ist null");
+        }
+
     }
 }
