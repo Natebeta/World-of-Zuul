@@ -1,4 +1,4 @@
-package de.szut.zuul;
+package de.szut.zuul.model;
 
 public class Item {
 

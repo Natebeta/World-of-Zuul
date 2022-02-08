@@ -1,4 +1,4 @@
-package de.szut.zuul;
+package de.szut.zuul.gamecontrol;
 
 /**
  * This class is part of the "World of Zuul" application. 

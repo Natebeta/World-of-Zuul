@@ -1,11 +1,14 @@
-package de.szut.zuul;
+package de.szut.zuul.model;
+
+import de.szut.zuul.exceptions.ItemNotFoundException;
+import de.szut.zuul.exceptions.ItemTooHeavyException;
 
 import java.util.LinkedList;
 
 public class Player {
 
-    Room currentRoom;
-    double loadCapacity = 10;
+    public Room currentRoom;
+    public double loadCapacity = 10;
     LinkedList<Item> inventory = new LinkedList();
 
     public Room getCurrentRoom() {
@@ -16,12 +19,11 @@ public class Player {
         currentRoom = newRoom;
     }
 
-    public boolean takeItem(Item item) {
+    public void takeItem(Item item) throws ItemTooHeavyException {
         if (isTakePossible(item)) {
             inventory.add(item);
-            return true;
         } else {
-            return false;
+            throw new ItemTooHeavyException("Too heavy to take");
         }
     }
 
@@ -39,14 +41,14 @@ public class Player {
         return inventoryWeight;
     }
 
-    public Item dropItem(String name) {
+    public Item dropItem(String name) throws ItemNotFoundException {
         Item dropItem = null;
         for (int i = 0; i < inventory.size(); i++) {
             if (inventory.get(i).getName().equals(name)) {
                 dropItem = inventory.get(i);
                 inventory.remove(i);
-            } else {
-                dropItem = null;
+            } else if (dropItem == null){
+                throw new ItemNotFoundException("You don't own this item!");
             }
         }
 
@@ -65,4 +67,7 @@ public class Player {
                 + "absorbed weight: " + calculateWeight() + "\n";
     }
 
+    public double getLoadCapacity() {
+        return loadCapacity;
+    }
 }

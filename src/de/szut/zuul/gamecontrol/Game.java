@@ -1,4 +1,10 @@
-package de.szut.zuul;
+package de.szut.zuul.gamecontrol;
+
+import de.szut.zuul.model.Item;
+import de.szut.zuul.model.Player;
+import de.szut.zuul.model.Room;
+import de.szut.zuul.exceptions.ItemNotFoundException;
+import de.szut.zuul.exceptions.ItemTooHeavyException;
 
 /**
  *  This class is the main class of the "World of Zuul" application. 
@@ -137,7 +143,7 @@ public class Game
      * @param command The command to be processed.
      * @return true If the command ends the game, false otherwise.
      */
-    private boolean processCommand(Command command) 
+    private boolean processCommand(Command command)
     {
         boolean wantToQuit = false;
 
@@ -160,12 +166,20 @@ public class Game
             look();
         }
         else if (commandWord.equals("take")) {
-            takeItem(command);
+            try {
+                takeItem(command);
+            } catch (ItemTooHeavyException | ItemNotFoundException e) {
+                System.out.println(e.getMessage());
+            }
             System.out.println(player.showStatus());
             System.out.println(player.getCurrentRoom().getLongDescription());
         }
         else if (commandWord.equals("drop")) {
-            dropItem(command);
+            try {
+                dropItem(command);
+            } catch (ItemNotFoundException e) {
+                System.out.println(e.getMessage());
+            }
             System.out.println(player.showStatus());
             System.out.println(player.getCurrentRoom().getLongDescription());
         }
@@ -260,7 +274,7 @@ public class Game
         System.out.println(player.getCurrentRoom().getLongDescription());
     }
 
-    private void takeItem(Command command) {
+    private void takeItem(Command command) throws ItemNotFoundException, ItemTooHeavyException {
         String itemFromCommand = command.getSecondWord();
         Item newItem = player.getCurrentRoom().removeItem(itemFromCommand);
         if ((newItem != null) && !(player.loadCapacity > 10)) {
@@ -270,14 +284,14 @@ public class Game
         }
     }
 
-    private void dropItem(Command command) {
+    private void dropItem(Command command) throws ItemNotFoundException {
         String itemFromCommand = command.getSecondWord();
-        Item newItem = player.dropItem(itemFromCommand);
+        Item newItem = null;
+        newItem = player.dropItem(itemFromCommand);
         if (newItem != null) {
             player.currentRoom.putItem(newItem.getName(), newItem.getDescription(), newItem.getWeight());
         } else {
             System.out.println("Bei dropItem Error: Das Item ist null");
         }
-
     }
 }

@@ -1,4 +1,4 @@
-package de.szut.zuul;
+package de.szut.zuul.gamecontrol;
 
 import java.util.Scanner;
 
