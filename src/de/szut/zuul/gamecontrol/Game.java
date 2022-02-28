@@ -5,6 +5,7 @@ import de.szut.zuul.model.Player;
 import de.szut.zuul.model.Room;
 import de.szut.zuul.exceptions.ItemNotFoundException;
 import de.szut.zuul.exceptions.ItemTooHeavyException;
+import de.szut.zuul.model.status.Zustand;
 
 /**
  *  This class is the main class of the "World of Zuul" application. 
@@ -48,6 +49,7 @@ public class Game
         // create the rooms
         marketsquare = new Room("on the market square");
         marketsquare.putItem("Bogen", "ein Bogen aus Holz", 0.5);
+        marketsquare.putItem("Herb", "Heilkraut", 0);
         templePyramid = new Room("in a temple pyramid");
         tavern = new Room("in the tavern at the market square");
         tavern.putItem("Nahrung", "ein Teller mit deftigem Fleisch und Maisbrei", 0.5);
@@ -183,6 +185,15 @@ public class Game
             System.out.println(player.showStatus());
             System.out.println(player.getCurrentRoom().getLongDescription());
         }
+        else if (commandWord.equals("eat")) {
+            try {
+                eat(command);
+            } catch (ItemNotFoundException e) {
+                e.printStackTrace();
+            }
+            System.out.println(player.showStatus());
+            System.out.println(player.getCurrentRoom().getLongDescription());
+        }
 
         return wantToQuit;
     }
@@ -292,6 +303,14 @@ public class Game
             player.currentRoom.putItem(newItem.getName(), newItem.getDescription(), newItem.getWeight());
         } else {
             System.out.println("Bei dropItem Error: Das Item ist null");
+        }
+    }
+
+    private void eat(Command command) throws ItemNotFoundException {
+        String itemFromCommand = command.getSecondWord();
+        Item newItem = player.getCurrentRoom().removeItem(itemFromCommand);
+        if(newItem.getName().equals("Herb")) {
+            player.getAktuellerZustand().heilen();
         }
     }
 }

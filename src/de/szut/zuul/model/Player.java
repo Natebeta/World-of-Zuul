@@ -2,6 +2,9 @@ package de.szut.zuul.model;
 
 import de.szut.zuul.exceptions.ItemNotFoundException;
 import de.szut.zuul.exceptions.ItemTooHeavyException;
+import de.szut.zuul.model.status.Gesund;
+import de.szut.zuul.model.status.Verwundet;
+import de.szut.zuul.model.status.Zustand;
 
 import java.util.LinkedList;
 
@@ -10,6 +13,11 @@ public class Player {
     public Room currentRoom;
     public double loadCapacity = 10;
     LinkedList<Item> inventory = new LinkedList();
+    private Zustand aktuellerZustand;
+
+    public Player() {
+        setAktuellerZustand(new Verwundet(this));
+    }
 
     public Room getCurrentRoom() {
         return currentRoom;
@@ -64,10 +72,19 @@ public class Player {
         return "> Status of the player \n"
                 + "loadCapacity: " + loadCapacity + "\n"
                 + "taken items: " + items + "\n"
-                + "absorbed weight: " + calculateWeight() + "\n";
+                + "absorbed weight: " + calculateWeight() + "\n"
+                + "Zustand: " + aktuellerZustand + "\n";
     }
 
     public double getLoadCapacity() {
         return loadCapacity;
+    }
+
+    public void setAktuellerZustand(Zustand aktuellerZustand) {
+        this.aktuellerZustand = aktuellerZustand;
+    }
+
+    public Zustand getAktuellerZustand() {
+        return aktuellerZustand;
     }
 }
